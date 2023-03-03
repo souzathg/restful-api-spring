@@ -2,40 +2,55 @@ package br.com.souzathg.restfulapispring.controller;
 
 import br.com.souzathg.restfulapispring.model.entities.Employee;
 import br.com.souzathg.restfulapispring.repository.EmployeeRepository;
+import br.com.souzathg.restfulapispring.resources.EmployeeModelAssembler;
 import br.com.souzathg.restfulapispring.resources.EmployeeNotFoundException;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class EmployeeController {
 
     private final EmployeeRepository repository;
+    private final EmployeeModelAssembler assembler;
 
-    EmployeeController(EmployeeRepository repository) {
+    public EmployeeController(EmployeeRepository repository, EmployeeModelAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     @GetMapping("/employees")
-    List<Employee> all() {
-        return  repository.findAll();
+    public CollectionModel<EntityModel<Employee>> all() {
+        List<EntityModel<Employee>> employees = repository.findAll().stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(employees, linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
     }
 
     @PostMapping("/employees")
-    Employee newEmployee(@RequestBody Employee newEmployee) {
+    public Employee newEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
 
     // Single item
     @GetMapping("/employees/{id}")
-    Employee one(@PathVariable Long id) {
+    public EntityModel<Employee> one(@PathVariable Long id) {
 
-        return repository.findById(id)
+        Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        return assembler.toModel(employee);
     }
 
     @PutMapping("/employees/{id}")
-    Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+    public Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
         return repository.findById(id)
                 .map(employee -> {
@@ -50,7 +65,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    public void deleteEmployee(@PathVariable Long id) {
         repository.deleteById(id);
     }
 }
