@@ -35,6 +35,7 @@ public class Employee {
 
     public String getName() {
         return this.firstName + " " + this.lastName;
+        /* Ainda que não esteja sendo salvo no banco, o JPA retorna qualquer getter que esteja na classe de entidade */
     }
 
     public void setName(String name) {
