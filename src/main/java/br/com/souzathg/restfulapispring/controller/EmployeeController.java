@@ -2,6 +2,7 @@ package br.com.souzathg.restfulapispring.controller;
 
 import br.com.souzathg.restfulapispring.model.entities.Employee;
 import br.com.souzathg.restfulapispring.repository.EmployeeRepository;
+import br.com.souzathg.restfulapispring.resources.EmployeeNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class EmployeeController {
         return  repository.findAll();
     }
 
-    @PostMapping("/employess")
+    @PostMapping("/employees")
     Employee newEmployee(@RequestBody Employee newEmployee) {
         return repository.save(newEmployee);
     }
