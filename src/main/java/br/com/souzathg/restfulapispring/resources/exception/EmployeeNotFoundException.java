@@ -1,4 +1,4 @@
-package br.com.souzathg.restfulapispring.resources;
+package br.com.souzathg.restfulapispring.resources.exception;
 
 public class EmployeeNotFoundException extends RuntimeException {
 

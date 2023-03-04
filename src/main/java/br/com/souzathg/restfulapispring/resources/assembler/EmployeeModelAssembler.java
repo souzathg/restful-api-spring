@@ -1,4 +1,4 @@
-package br.com.souzathg.restfulapispring.resources;
+package br.com.souzathg.restfulapispring.resources.assembler;
 
 import br.com.souzathg.restfulapispring.controller.EmployeeController;
 import br.com.souzathg.restfulapispring.model.entities.Employee;

@@ -2,8 +2,8 @@ package br.com.souzathg.restfulapispring.controller;
 
 import br.com.souzathg.restfulapispring.model.entities.Employee;
 import br.com.souzathg.restfulapispring.repository.EmployeeRepository;
-import br.com.souzathg.restfulapispring.resources.EmployeeModelAssembler;
-import br.com.souzathg.restfulapispring.resources.EmployeeNotFoundException;
+import br.com.souzathg.restfulapispring.resources.assembler.EmployeeModelAssembler;
+import br.com.souzathg.restfulapispring.resources.exception.EmployeeNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
