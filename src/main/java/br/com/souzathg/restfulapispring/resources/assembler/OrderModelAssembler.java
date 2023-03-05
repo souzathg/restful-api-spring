@@ -2,6 +2,7 @@ package br.com.souzathg.restfulapispring.resources.assembler;
 
 import br.com.souzathg.restfulapispring.controller.OrderController;
 import br.com.souzathg.restfulapispring.model.entities.Order;
+import br.com.souzathg.restfulapispring.model.enums.Status;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,15 @@ public class OrderModelAssembler implements RepresentationModelAssembler<Order, 
     @Override
     public EntityModel<Order> toModel(Order order) {
 
-        return EntityModel.of(order);
+        EntityModel<Order> orderModel - EntityModel.of(order,
+                linkTo(methodOn(OrderController.class).one(order.getId())).withSelfRel(),
+                linkTo(methodOn(OrderController.class).all()).withRel("orders"));
+
+        if (order.getStatus() == Status.IN_PROGRESS) {
+            orderModel.add(linkTo(methodOn(OrderController.class).cancel(order.getId())).withRel("cancel"));
+            orderModel.add(linkTo(methodOn(OrderController.class).complete(order.getId())).withRel("cancel"));
+        }
+
+        return orderModel;
     }
 }
