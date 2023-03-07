@@ -19,11 +19,11 @@ public class LoadDB {
     CommandLineRunner initDatabase(EmployeeRepository employeeRepository, OrderRepository orderRepository) {
 
         return args -> {
-            employeeRepository.save(new Employee("Bilbo","Baggins", "burglar")));
-            employeeRepository.save(new Employee("Frodo", "Baggins", "thief")));
+            employeeRepository.save(new Employee("Bilbo","Baggins", "burglar"));
+            employeeRepository.save(new Employee("Frodo", "Baggins", "thief"));
 
             employeeRepository.findAll().forEach(employee -> {
-                log.info("Preloaded " + employee)
+                log.info("Preloaded " + employee);
             });
 
             orderRepository.save(new Order("MacBook Pro", Status.COMPLETED));

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@RestController
 public class OrderController {
     private final OrderRepository orderRepository;
     private final OrderModelAssembler assembler;
@@ -73,10 +74,10 @@ public class OrderController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
                 .body(Problem.create()
                         .withTitle("Method not allowed")
-                        .withDetail("You can't cancel an order that is in the " + order.getStatus() + "status"));
+                        .withDetail("You can't cancel an order that is in the " + order.getStatus() + " status"));
     }
 
-    @DeleteMapping("/orders/{id}/complete")
+    @PutMapping("/orders/{id}/complete")
     public ResponseEntity<?> complete(@PathVariable Long id) {
 
         Order order = orderRepository.findById(id)
@@ -91,6 +92,6 @@ public class OrderController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
                 .body(Problem.create()
                         .withTitle("Method not allowed")
-                        .withDetail("You can't cancel an order that is in the " + order.getStatus() + "status"));
+                        .withDetail("You can't complete an order that is in the " + order.getStatus() + " status"));
     }
 }
